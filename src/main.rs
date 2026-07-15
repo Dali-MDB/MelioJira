@@ -10,6 +10,9 @@ use state::AppState;
 mod config;
 use config::Config;
 
+mod models;
+mod enums;
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()>{
     dotenvy::dotenv().ok();   //load env variables
