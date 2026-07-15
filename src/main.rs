@@ -13,6 +13,8 @@ use config::Config;
 mod models;
 mod enums;
 
+mod dtos;
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()>{
     dotenvy::dotenv().ok();   //load env variables

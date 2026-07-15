@@ -18,3 +18,4 @@ sqlx = {
 }
 dotenvy = "0.15"
 chrono = { version = "0.4", features = ["serde"] }
+validator = { version = "0.19", features = ["derive"] }
