@@ -4,15 +4,16 @@ use chrono::{DateTime, Utc};
 use crate::enums::ticket_status::TicketStatus;
 use crate::enums::ticket_priority::TicketPriority;
 
+#[derive(Debug, FromRow)]
 pub struct Ticket{
-    id : Uuid,
-    project_id : Uuid,
-    sprint_id : Option<Uuid>,
-    title : String,
-    description : Option<String>,
-    created_by : Uuid,
-    assigned_to : Option<Uuid>,
-    created_at : DateTime<Utc>,
-    status : TicketStatus,
-    priority: TicketPriority,
+    pub id : Uuid,
+    pub project_id : Uuid,
+    pub sprint_id : Option<Uuid>,
+    pub title : String,
+    pub description : Option<String>,
+    pub created_by : Uuid,
+    pub assigned_to : Option<Uuid>,
+    pub created_at : DateTime<Utc>,
+    pub status : TicketStatus,
+    pub priority: TicketPriority,
 }

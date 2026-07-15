@@ -3,6 +3,7 @@ use uuid::Uuid;
 use chrono::{DateTime, Utc};
 
 
+#[derive(Debug, FromRow)]
 pub struct Sprint{
     pub id : Uuid,
     pub project_id : Uuid,
