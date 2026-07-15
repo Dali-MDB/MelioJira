@@ -7,6 +7,6 @@ pub struct Project{
     pub id : Uuid,
     pub owner_id : Uuid,
     pub title : String,
-    pub description: String,
+    pub description: Option<String>,
     pub creation_date : DateTime<Utc>,
 }
