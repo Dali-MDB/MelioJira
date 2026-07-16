@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use validator::Validate;
 
-#[derive(Debug, Validate, Deserialize)]
+#[derive(Debug, Clone, Validate, Deserialize)]
 pub struct CreateProjectRequest {
     #[validate(length(max = 100))]
     pub title: String,
@@ -11,7 +11,7 @@ pub struct CreateProjectRequest {
     pub description: Option<String>,
 }
 
-#[derive(Debug, Validate, Deserialize)]
+#[derive(Debug, Clone, Validate, Deserialize)]
 pub struct UpdateProjectRequest {
     #[validate(length(max = 100))]
     pub title: Option<String>,
@@ -19,7 +19,7 @@ pub struct UpdateProjectRequest {
     pub description: Option<String>,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 pub struct ProjectResponse {
     pub id: Uuid,
     pub owner_id: Uuid,

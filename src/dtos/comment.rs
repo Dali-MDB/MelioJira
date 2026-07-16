@@ -4,7 +4,7 @@ use uuid::Uuid;
 use validator::Validate;
 
 
-#[derive(Debug, Validate, Deserialize)]
+#[derive(Debug, Clone, Validate, Deserialize)]
 pub struct CreateCommentRequest{
     #[validate(length(min=3, max=10000))]
     pub content : String,
@@ -12,7 +12,7 @@ pub struct CreateCommentRequest{
 
 
 
-#[derive(Debug, Validate, Deserialize)]
+#[derive(Debug, Clone, Validate, Deserialize)]
 pub struct UpdateCommentRequest{
     #[validate(length(min=3, max=10000))]
     pub content : String,
@@ -20,7 +20,7 @@ pub struct UpdateCommentRequest{
 
 
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct CommentResponse{
     pub id: Uuid,
     pub by: Uuid,

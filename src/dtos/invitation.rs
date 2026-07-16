@@ -3,12 +3,12 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct CreateInvitationRequest {
     pub invited_user_id: Uuid
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 pub struct InvitationResponse {
     id: Uuid,
     project_id: Uuid,

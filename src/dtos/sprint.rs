@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use validator::Validate;
 
-#[derive(Debug, Validate, Deserialize)]
+#[derive(Debug, Clone, Validate, Deserialize)]
 pub struct CreateSprintRequest {
     #[validate(length(max = 100))]
     pub name: String,
@@ -14,7 +14,7 @@ pub struct CreateSprintRequest {
     pub end_date: DateTime<Utc>,
 }
 
-#[derive(Debug, Validate, Deserialize)]
+#[derive(Debug, Clone, Validate, Deserialize)]
 pub struct UpdateSprintRequest {
     #[validate(length(max = 100))]
     pub title: Option<String>,
@@ -25,7 +25,7 @@ pub struct UpdateSprintRequest {
     pub end_date: Option<DateTime<Utc>>,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 pub struct SprintResponse {
     pub id: Uuid,
     pub project_id: Uuid,

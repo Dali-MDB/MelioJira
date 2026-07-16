@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use validator::Validate;
 
-#[derive(Debug, Validate, Deserialize)]
+#[derive(Debug, Clone, Validate, Deserialize)]
 pub struct CreateTicketRequest {
     #[validate(length(min = 3, max = 100))]
     pub title: String,
@@ -14,7 +14,7 @@ pub struct CreateTicketRequest {
     pub priority: TicketPriority,
 }
 
-#[derive(Debug, Validate, Deserialize)]
+#[derive(Debug, Clone, Validate, Deserialize)]
 pub struct UpdateTicketRequest {
     #[validate(length(min = 3, max = 100))]
     pub title: Option<String>,
@@ -23,22 +23,22 @@ pub struct UpdateTicketRequest {
     pub priority: Option<TicketPriority>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct UpdateTicketStatusRequest {
     pub status: TicketStatus,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct UpdateTicketAssigneeRequest {
     pub assignee_id: Option<Uuid>, //becaus when we un assign it we pass Null
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct UpdateTicketSprintRequest {
     pub sprint_id: Option<Uuid>, //becuase when we take it back to backlog we pass Null
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 pub struct TicketResponse {
     pub id: Uuid,
     pub project_id: Uuid,

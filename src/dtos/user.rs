@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use validator::Validate;
 
-#[derive(Debug, Validate, Deserialize)]
+#[derive(Debug, Clone, Validate, Deserialize)]
 pub struct CreateUserRequest {
     pub user_name: String,
 
@@ -10,7 +10,7 @@ pub struct CreateUserRequest {
     pub email: String,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 pub struct UserResponse {
     pub id: Uuid,
     pub user_name: String,
