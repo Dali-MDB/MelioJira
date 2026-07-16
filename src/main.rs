@@ -8,6 +8,7 @@ use state::AppState;
 mod config;
 use config::Config;
 
+mod auth;
 mod enums;
 mod models;
 

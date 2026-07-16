@@ -2,10 +2,9 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreateInvitationRequest {
-    pub invited_user_id: Uuid
+    pub invited_user_id: Uuid,
 }
 
 #[derive(Debug, Clone, Serialize)]
