@@ -1,12 +1,12 @@
-use sqlx::{FromRow};
-use uuid::Uuid;
 use chrono::{DateTime, Utc};
+use sqlx::FromRow;
+use uuid::Uuid;
 
 #[derive(Debug, FromRow)]
-pub struct Project{
-    pub id : Uuid,
-    pub owner_id : Uuid,
-    pub title : String,
+pub struct Project {
+    pub id: Uuid,
+    pub owner_id: Uuid,
+    pub title: String,
     pub description: Option<String>,
-    pub creation_date : DateTime<Utc>,
+    pub creation_date: DateTime<Utc>,
 }
