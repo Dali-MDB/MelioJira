@@ -11,7 +11,7 @@ pub async fn registerService(
     user: CreateUserRequest,
 ) -> Result<UserResponse, Error> {
     //check if this email is already registered
-    let exists = exists_by_email(pool, &user.email).await?;
+    let exists = exists_by_email(pool, &user.email).await.map_err(actix_web::error::ErrorInternalServerError)?;
 
     if exists {
         return Err(ErrorConflict("Email already exists"));
