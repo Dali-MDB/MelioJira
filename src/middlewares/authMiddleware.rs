@@ -1,11 +1,14 @@
 use actix_web::{
-    Error, HttpMessage, dev::{ServiceRequest, ServiceResponse}, error::{ErrorInternalServerError, ErrorUnauthorized}, http::header, middleware::Next, web,
+    Error, HttpMessage,
+    dev::{ServiceRequest, ServiceResponse},
+    error::{ErrorInternalServerError, ErrorUnauthorized},
+    http::header,
+    middleware::Next,
+    web,
 };
 
 use crate::{
-    auth::jwt::verify_token,
-    repositories::userRepository::fetch_user_by_id,
-    state::AppState,
+    auth::jwt::verify_token, repositories::userRepository::fetch_user_by_id, state::AppState,
 };
 
 pub async fn auth_middleware(

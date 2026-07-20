@@ -13,7 +13,9 @@ sqlx = {
     version = "0.8",
     features = [
         "runtime-tokio",
-        "mysql"
+        "mysql",
+        "macros",
+        "uuid"
     ]
 }
 dotenvy = "0.15"
