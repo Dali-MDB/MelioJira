@@ -16,6 +16,10 @@ mod dtos;
 mod middlewares;
 mod repositories;
 
+mod handlers;
+mod routes;
+mod services;
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenvy::dotenv().ok(); //load env variables

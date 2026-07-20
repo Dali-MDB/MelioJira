@@ -8,6 +8,7 @@ pub struct CreateUserRequest {
 
     #[validate(email)]
     pub email: String,
+    pub password: String,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -15,4 +16,11 @@ pub struct UserResponse {
     pub id: Uuid,
     pub user_name: String,
     pub email: String,
+}
+
+#[derive(Debug, Clone, Validate, Deserialize)]
+pub struct UserLoginRequest {
+    #[validate(email)]
+    pub email: String,
+    pub password: String,
 }

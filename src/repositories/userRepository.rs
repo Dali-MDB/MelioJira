@@ -3,7 +3,7 @@ use sqlx::MySqlPool;
 use uuid::Uuid;
 
 pub async fn exists_by_id(pool: &MySqlPool, id: Uuid) -> Result<bool, sqlx::Error> {
-    let exists = sqlx::query("SELECT 1 FROM Users WHERE id = ?")
+    let exists = sqlx::query("SELECT 1 FROM Users WHERE id = ?;")
         .bind(id)
         .fetch_optional(pool)
         .await?;
@@ -12,7 +12,7 @@ pub async fn exists_by_id(pool: &MySqlPool, id: Uuid) -> Result<bool, sqlx::Erro
 }
 
 pub async fn exists_by_email(pool: &MySqlPool, email: &str) -> Result<bool, sqlx::Error> {
-    let exists = sqlx::query("SELECT 1 FROM Users WHERE email = ?")
+    let exists = sqlx::query("SELECT 1 FROM Users WHERE email = ?;")
         .bind(email)
         .fetch_optional(pool)
         .await?;
