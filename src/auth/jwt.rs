@@ -9,7 +9,6 @@ pub struct Claim {
     pub iat: usize,
 }
 
-
 pub fn generate_token(
     payload: &Claim,
     secret: &str,

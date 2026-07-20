@@ -13,6 +13,8 @@ mod enums;
 mod models;
 
 mod dtos;
+mod middlewares;
+mod repositories;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -27,9 +29,11 @@ async fn main() -> std::io::Result<()> {
         pool: MySqlPool::connect(&my_config.database_url)
             .await
             .expect("couldn't connect to MySql"),
+        config: my_config,
     };
+    let port = my_app_state.config.port.parse::<u16>().unwrap();
     HttpServer::new(move || App::new().app_data(my_app_state.clone()))
-        .bind(("127.0.0.1", my_config.port.parse::<u16>().unwrap()))?
+        .bind(("127.0.0.1", port))?
         .run()
         .await
 }
