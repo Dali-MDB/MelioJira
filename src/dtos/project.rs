@@ -1,3 +1,4 @@
+use crate::models::project::Project;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -26,4 +27,16 @@ pub struct ProjectResponse {
     pub title: String,
     pub description: Option<String>,
     pub creation_date: DateTime<Utc>,
+}
+
+impl From<Project> for ProjectResponse {
+    fn from(project: Project) -> Self {
+        Self {
+            id: project.id,
+            title: project.title,
+            description: project.description,
+            owner_id: project.owner_id,
+            creation_date: project.creation_date,
+        }
+    }
 }

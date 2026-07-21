@@ -37,11 +37,12 @@ async fn main() -> std::io::Result<()> {
     };
     let port = my_app_state.config.port.parse::<u16>().unwrap();
     let app_data = web::Data::new(my_app_state);
-    HttpServer::new(move || App::new().app_data(
-        app_data.clone())
-        .configure(routes::auth_route::config) 
-    )
-        .bind(("127.0.0.1", port))?
-        .run()
-        .await
+    HttpServer::new(move || {
+        App::new()
+            .app_data(app_data.clone())
+            .configure(routes::auth_route::config)
+    })
+    .bind(("127.0.0.1", port))?
+    .run()
+    .await
 }

@@ -60,8 +60,9 @@ pub async fn loginService(
         iat: now.timestamp() as usize,
         exp: (now + Duration::minutes(30)).timestamp() as usize,
     };
-    let token = generate_token(&payload, &state.config.jwt_secret).map_err(ErrorInternalServerError)?;
-    let response = JWTResponse{
+    let token =
+        generate_token(&payload, &state.config.jwt_secret).map_err(ErrorInternalServerError)?;
+    let response = JWTResponse {
         access_token: token,
     };
     Ok(response)

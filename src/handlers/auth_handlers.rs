@@ -1,4 +1,4 @@
-use actix_web::{HttpRequest, HttpResponse, Responder, Error, get, post, web};
+use actix_web::{Error, HttpRequest, HttpResponse, Responder, get, post, web};
 
 use crate::{
     dtos::user::{CreateUserRequest, UserLoginRequest},
@@ -6,21 +6,14 @@ use crate::{
     state::AppState,
 };
 
-use crate::services::auth_services::{
-    registerService, loginService
-};
-
+use crate::services::auth_services::{loginService, registerService};
 
 #[post("/register")]
 pub async fn register(
     state: web::Data<AppState>,
     user: web::Json<CreateUserRequest>,
 ) -> Result<HttpResponse, Error> {
-    let response = registerService(
-        &state.pool,
-        user.into_inner(),
-    )
-    .await?;
+    let response = registerService(&state.pool, user.into_inner()).await?;
     Ok(HttpResponse::Created().json(response))
 }
 
@@ -28,9 +21,8 @@ pub async fn register(
 pub async fn login(
     state: web::Data<AppState>,
     cred: web::Json<UserLoginRequest>,
-) -> Result<HttpResponse, Error>  {
-    let response = loginService( state.get_ref(), &state.pool, cred.into_inner())
-    .await?;
+) -> Result<HttpResponse, Error> {
+    let response = loginService(state.get_ref(), &state.pool, cred.into_inner()).await?;
     Ok(HttpResponse::Created().json(response))
 }
 

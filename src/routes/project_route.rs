@@ -3,8 +3,6 @@ use actix_web::{
     web::{ServiceConfig, scope},
 };
 
-use crate::handlers::auth_handlers::{login, register};
-
 pub fn config(cfg: &mut ServiceConfig) {
-    cfg.service(scope("/auth").service(register).service(login));
+    cfg.service(scope("/project"));
 }
