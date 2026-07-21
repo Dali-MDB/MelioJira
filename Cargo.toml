@@ -25,7 +25,7 @@ validator = { version = "0.19", features = ["derive"] }
 #for auth
 argon2 = "0.5"
 bcrypt = "0.16"
-jsonwebtoken = "10"
+jsonwebtoken = { version = "10", features = ["rust_crypto"] }
 
 futures-util = "0.3"
 

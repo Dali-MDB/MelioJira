@@ -1,4 +1,4 @@
-use actix_web::{App, HttpServer};
+use actix_web::{App, HttpServer, web};
 use dotenvy;
 
 mod state;
@@ -36,7 +36,11 @@ async fn main() -> std::io::Result<()> {
         config: my_config,
     };
     let port = my_app_state.config.port.parse::<u16>().unwrap();
-    HttpServer::new(move || App::new().app_data(my_app_state.clone()))
+    let app_data = web::Data::new(my_app_state);
+    HttpServer::new(move || App::new().app_data(
+        app_data.clone())
+        .configure(routes::auth_route::config) 
+    )
         .bind(("127.0.0.1", port))?
         .run()
         .await
