@@ -9,6 +9,11 @@ pub struct Claim {
     pub iat: usize,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct JWTResponse {
+    pub access_token: String,
+}
+
 pub fn generate_token(
     payload: &Claim,
     secret: &str,
