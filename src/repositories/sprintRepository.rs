@@ -7,6 +7,7 @@ pub async fn create_sprint(
     pool: &MySqlPool,
     name: &str,
     goal: &str,
+    project_id: Uuid,
     start_date: DateTime<Utc>,
     end_date: DateTime<Utc>,
     created_by: Uuid,
@@ -16,7 +17,7 @@ pub async fn create_sprint(
         project_id: project_id,
         created_by: created_by,
         name: name.to_string(),
-        goal: Some(goal.to_string()),
+        goal: Some(String::from(goal)),
         start_date: start_date,
         end_date: end_date,
     };
@@ -27,8 +28,8 @@ pub async fn create_sprint(
     .bind(sprint.id)
     .bind(sprint.project_id)
     .bind(sprint.created_by)
-    .bind(sprint.name)
-    .bind(sprint.goal)
+    .bind(&sprint.name)
+    .bind(&sprint.goal)
     .bind(sprint.start_date)
     .bind(sprint.end_date)
     .execute(pool)
