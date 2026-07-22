@@ -19,9 +19,9 @@ pub struct CreateSprintRequest {
 #[derive(Debug, Clone, Validate, Deserialize)]
 pub struct UpdateSprintRequest {
     #[validate(length(max = 100))]
-    pub title: Option<String>,
+    pub name: Option<String>,
     #[validate(length(max = 10000))]
-    pub description: Option<String>,
+    pub goal: Option<String>,
 
     pub start_date: Option<DateTime<Utc>>,
     pub end_date: Option<DateTime<Utc>>,

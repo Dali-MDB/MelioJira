@@ -61,16 +61,16 @@ pub async fn get_sprints_by_project_id(
 pub async fn update_sprint(
     pool: &MySqlPool,
     id: Uuid,
-    title: &str,
-    description: &str,
+    name: &str,
+    goal: &str,
     start_date: DateTime<Utc>,
     end_date: DateTime<Utc>,
 ) -> Result<(), sqlx::Error> {
     let sql =
-        "UPDATE Sprints SET title = ?, description = ?, start_date = ?, end_date = ? WHERE id = ?;";
+        "UPDATE Sprints SET name = ?, goal = ?, start_date = ?, end_date = ? WHERE id = ?;";
     sqlx::query(sql)
-        .bind(title)
-        .bind(description)
+        .bind(name)
+        .bind(goal)
         .bind(start_date)
         .bind(end_date)
         .bind(id)

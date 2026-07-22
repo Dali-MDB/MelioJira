@@ -1,6 +1,7 @@
-use crate::dtos::sprint::{self, CreateSprintRequest, SprintResponse};
+use crate::dtos::sprint::{self, CreateSprintRequest, SprintResponse, UpdateSprintRequest};
 use crate::models::project::Project;
-use crate::repositories::sprintRepository::{create_sprint, get_sprints_by_project_id, get_sprint_by_id};
+use crate::models::sprint::Sprint;
+use crate::repositories::sprintRepository::{create_sprint, delete_sprint, get_sprint_by_id, get_sprints_by_project_id, update_sprint};
 use crate::services::projects_service::getProjectService;
 use actix_web::error::Error;
 use sqlx::MySqlPool;
@@ -55,3 +56,40 @@ pub async fn getProjectSprintsService(
 }
 
 
+pub async fn updateSprintService(
+    pool: &MySqlPool,
+    sprint_id: Uuid,
+    sprint: UpdateSprintRequest,
+    user_id: Uuid
+) -> Result<SprintResponse, Error> {
+    //get sprint
+    let current_sprint = get_sprint_by_id(pool, sprint_id).await.map_err(actix_web::error::ErrorInternalServerError)?;
+   
+    let name = sprint.name.unwrap_or(current_sprint.name);
+    let goal = sprint.goal.unwrap_or(current_sprint.goal.unwrap_or("".to_string()));
+    let start_date = sprint.start_date.unwrap_or(current_sprint.start_date);
+    let end_date = sprint.end_date.unwrap_or(current_sprint.end_date);
+    update_sprint(pool, sprint_id, &name, &goal, start_date, end_date).await.map_err(actix_web::error::ErrorInternalServerError)?;
+
+    let updated = Sprint{
+        id: current_sprint.id,
+        project_id: current_sprint.project_id,
+        created_by: current_sprint.created_by,
+        name: name,
+        goal: Some(goal),
+        start_date: start_date,
+        end_date: end_date,
+      
+    };
+    let response = SprintResponse::from(updated);
+    Ok(response)
+}
+
+pub async fn deleteSprintService(
+    pool: &MySqlPool,
+    sprint_id: Uuid,
+    user_id: Uuid
+) -> Result<(), Error> {
+    delete_sprint(pool, sprint_id).await.map_err(actix_web::error::ErrorInternalServerError)?;
+    Ok(())
+}
