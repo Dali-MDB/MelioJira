@@ -1,7 +1,7 @@
 use crate::dtos::project::{CreateProjectRequest, ProjectResponse, UpdateProjectRequest};
 use crate::models::project::Project;
 use crate::repositories::projectRepository::{
-    create_project, delete_project, get_all_user_projects, get_project_by_id, update_project,
+    create_project, delete_project, get_projects_by_owner_id, get_project_by_id, update_project,
 };
 use actix_web::error::Error;
 use sqlx::MySqlPool;
@@ -32,7 +32,7 @@ pub async fn getAllUserProjectsService(
     pool: &MySqlPool,
     user_id: Uuid,
 ) -> Result<Vec<ProjectResponse>, Error> {
-    let projects = get_all_user_projects(pool, user_id)
+    let projects = get_projects_by_owner_id(pool, user_id)
         .await
         .map_err(actix_web::error::ErrorInternalServerError)?;
     let responses = projects

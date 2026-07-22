@@ -1,5 +1,3 @@
-//implement the 5 end points (take reference from projects_service.rs)
-
 use crate::dtos::project::{CreateProjectRequest, UpdateProjectRequest};
 use crate::services::projects_service::{
     deleteProjectService, getAllUserProjectsService, getProjectService, updateProjectService,

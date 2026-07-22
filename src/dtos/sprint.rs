@@ -3,6 +3,8 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 use validator::Validate;
 
+use crate::models::sprint::Sprint;
+
 #[derive(Debug, Clone, Validate, Deserialize)]
 pub struct CreateSprintRequest {
     #[validate(length(max = 100))]
@@ -34,4 +36,18 @@ pub struct SprintResponse {
     pub goal: Option<String>,
     pub start_date: DateTime<Utc>,
     pub end_date: DateTime<Utc>,
+}
+
+impl From<Sprint> for SprintResponse {
+    fn from(sprint: Sprint) -> Self {
+        Self {
+            id: sprint.id,
+            project_id: sprint.project_id,
+            created_by: sprint.created_by,
+            name: sprint.name,
+            goal: sprint.goal,
+            start_date: sprint.start_date,
+            end_date: sprint.end_date,
+        }
+    }
 }
