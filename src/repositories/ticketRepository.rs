@@ -9,7 +9,7 @@ pub async fn create_ticket(
     pool: &MySqlPool,
     id: Uuid, 
     project_id: Uuid, 
-    sprint_id: Uuid, 
+    sprint_id: Option<Uuid>, 
     title: &str, 
     description: &str,
     creator_id: Uuid,
@@ -20,7 +20,7 @@ pub async fn create_ticket(
     let ticket = Ticket{
         id,
         project_id,
-        sprint_id: Some(sprint_id),
+        sprint_id,
         title: title.to_string(),
         description: Some(description.to_string()),
         creator_id,
@@ -143,6 +143,15 @@ pub async fn set_ticket_sprint_to_null(pool: &MySqlPool, id: Uuid)->Result<(), s
 
     Ok(())
 
+}
+
+pub async fn get_backlog_tickets(pool: &MySqlPool, project_id: Uuid)->Result<Vec<Ticket>, sqlx::Error>{
+    let tickets = sqlx::query_as::<_, Ticket>("SELECT * FROM Tickets WHERE project_id = ? AND sprint_id IS NULL")
+        .bind(project_id)
+        .fetch_all(pool)
+        .await?;
+
+    Ok(tickets)
 }
 
 pub async fn delete_ticket(pool: &MySqlPool, id: Uuid)->Result<(), sqlx::Error>{

@@ -1,3 +1,4 @@
+use crate::dtos::member::MemberResponse;
 use crate::dtos::project::{CreateProjectRequest, ProjectResponse, UpdateProjectRequest};
 use crate::enums::user_role::Role;
 use crate::models::{member::Member, project::Project};
@@ -149,5 +150,5 @@ pub async fn getProjectMembersService(
     let members = get_project_members(pool, project_id)
         .await
         .map_err(actix_web::error::ErrorInternalServerError)?;
-    Ok(members)
+    Ok(members.into_iter().map(MemberResponse::from).collect())
 }

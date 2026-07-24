@@ -1,5 +1,6 @@
 use crate::enums::ticket_priority::TicketPriority;
 use crate::enums::ticket_status::TicketStatus;
+use crate::models::ticket::Ticket;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -51,4 +52,22 @@ pub struct TicketResponse {
     pub updated_at: DateTime<Utc>,
     pub status: TicketStatus,
     pub priority: TicketPriority,
+}
+
+impl From<Ticket> for TicketResponse {
+    fn from(ticket: Ticket) -> Self {
+        Self {
+            id: ticket.id,
+            project_id: ticket.project_id,
+            sprint_id: ticket.sprint_id,
+            title: ticket.title,
+            description: ticket.description,
+            creator_id: ticket.creator_id,
+            assignee_id: ticket.assignee_id,
+            created_at: ticket.created_at,
+            updated_at: ticket.updated_at,
+            status: ticket.status,
+            priority: ticket.priority,
+        }
+    }
 }
