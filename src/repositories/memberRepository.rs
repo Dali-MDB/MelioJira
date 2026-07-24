@@ -54,9 +54,27 @@ pub async fn update_role(pool: &MySqlPool, user_id: Uuid, project_id: Uuid, new_
 }
 
 
+pub async fn get_member(
+    pool: &MySqlPool,
+    user_id: Uuid,
+    project_id: Uuid,
+) -> Result<Member, sqlx::Error> {
+    let member = sqlx::query_as::<_, Member>(
+        "SELECT * FROM Members WHERE user_id = ? AND project_id = ?;",
+    )
+    .bind(user_id)
+    .bind(project_id)
+    .fetch_optional(pool)
+    .await?;
+    let Some(member) = member else {
+        return Err(sqlx::Error::RowNotFound);
+    };
+    Ok(member)
+}
+
 pub async fn all_project_members(pool: &MySqlPool, project_id:Uuid)->Result<Vec<Member>, sqlx::Error>{
     let members = sqlx::query_as::<_,Member>(
-        "SELECT * FROM Member
+        "SELECT * FROM Members
               WHERE project_id = ?;")
             .bind(project_id)
             .fetch_all(pool)

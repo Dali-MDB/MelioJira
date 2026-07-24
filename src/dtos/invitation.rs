@@ -1,3 +1,5 @@
+use crate::enums::invitation_status::InvitationStatus;
+use crate::models::invitation::Invitation;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -9,9 +11,23 @@ pub struct CreateInvitationRequest {
 
 #[derive(Debug, Clone, Serialize)]
 pub struct InvitationResponse {
-    id: Uuid,
-    project_id: Uuid,
-    invited_user_id: Uuid,
-    invited_by: Uuid,
-    created_at: DateTime<Utc>,
+    pub id: Uuid,
+    pub project_id: Uuid,
+    pub invited_user_id: Uuid,
+    pub invited_by: Uuid,
+    pub status: InvitationStatus,
+    pub created_at: DateTime<Utc>,
+}
+
+impl From<Invitation> for InvitationResponse {
+    fn from(invitation: Invitation) -> Self {
+        Self {
+            id: invitation.id,
+            project_id: invitation.project_id,
+            invited_user_id: invitation.invited_user_id,
+            invited_by: invitation.invited_by,
+            status: invitation.status,
+            created_at: invitation.created_at,
+        }
+    }
 }

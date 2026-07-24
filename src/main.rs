@@ -41,6 +41,8 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(app_data.clone())
             .configure(routes::auth_route::config)
+            .configure(routes::project_route::config)
+            .configure(routes::invitation_route::config)
     })
     .bind(("127.0.0.1", port))?
     .run()
