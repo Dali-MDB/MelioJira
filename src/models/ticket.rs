@@ -4,7 +4,7 @@ use chrono::{DateTime, Utc};
 use sqlx::FromRow;
 use uuid::Uuid;
 
-#[derive(Debug, FromRow)]
+#[derive(Debug, FromRow, Clone)]
 pub struct Ticket {
     pub id: Uuid,
     pub project_id: Uuid,

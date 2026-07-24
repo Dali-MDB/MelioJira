@@ -3,3 +3,4 @@ pub mod sprintRepository;
 pub mod userRepository;
 pub mod memberRepository;
 pub mod inviteRepository;
+pub mod ticketRepository;
