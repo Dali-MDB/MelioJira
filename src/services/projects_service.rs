@@ -1,5 +1,7 @@
 use crate::dtos::project::{CreateProjectRequest, ProjectResponse, UpdateProjectRequest};
+use crate::enums::user_role::Role;
 use crate::models::project::Project;
+use crate::repositories::memberRepository::create_member;
 use crate::repositories::projectRepository::{
     create_project, delete_project, get_projects_by_owner_id, get_project_by_id, update_project,
 };
@@ -14,6 +16,9 @@ pub async fn createProjectService(
 ) -> Result<ProjectResponse, Error> {
     let description = project.description.as_deref().unwrap_or("");
     let project = create_project(pool, &project.title, description, owner_id)
+        .await
+        .map_err(actix_web::error::ErrorInternalServerError)?;
+    create_member(pool, owner_id, project.id, Role::Owner)
         .await
         .map_err(actix_web::error::ErrorInternalServerError)?;
     let response = ProjectResponse::from(project);
