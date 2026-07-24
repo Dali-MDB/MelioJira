@@ -1,11 +1,11 @@
 use crate::dtos::project::{CreateProjectRequest, ProjectResponse, UpdateProjectRequest};
 use crate::enums::user_role::Role;
-use crate::models::project::Project;
-use crate::repositories::memberRepository::create_member;
+use crate::models::{member::Member, project::Project};
+use crate::repositories::memberRepository::{create_member, get_member, remove_member};
 use crate::repositories::projectRepository::{
-    create_project, delete_project, get_projects_by_owner_id, get_project_by_id, update_project,
+    create_project, delete_all_project_members, delete_project, get_project_members, get_projects_by_owner_id, get_project_by_id, update_project,
 };
-use actix_web::error::Error;
+use actix_web::error::{Error, ErrorBadRequest, ErrorNotFound};
 use sqlx::MySqlPool;
 use uuid::Uuid;
 
@@ -105,5 +105,48 @@ pub async fn deleteProjectService(pool: &MySqlPool, id: Uuid, user_id: Uuid) -> 
     delete_project(pool, id)
         .await
         .map_err(actix_web::error::ErrorInternalServerError)?;
+    //delete all the project members
+    delete_all_project_members(pool, id)
+        .await
+        .map_err(actix_web::error::ErrorInternalServerError)?;
     Ok(())
+}
+
+pub async fn removeMemberService(
+    pool: &MySqlPool,
+    project_id: Uuid,
+    member_id: Uuid,
+    user_id: Uuid,
+) -> Result<(), Error> {
+    let project = get_project_by_id(pool, project_id)
+        .await
+        .map_err(|_| ErrorNotFound("Project not found"))?;
+    if project.owner_id != user_id {
+        return Err(actix_web::error::ErrorUnauthorized(
+            "You are not the owner of this project".to_string(),
+        ));
+    }
+    if member_id == project.owner_id {
+        return Err(ErrorBadRequest("Cannot remove the project owner".to_string()));
+    }
+
+    get_member(pool, member_id, project_id)
+        .await
+        .map_err(|_| ErrorNotFound("Member not found"))?;
+
+    remove_member(pool, member_id, project_id)
+        .await
+        .map_err(actix_web::error::ErrorInternalServerError)?;
+    Ok(())
+}
+
+
+pub async fn getProjectMembersService(
+    pool: &MySqlPool,
+    project_id: Uuid,
+) -> Result<Vec<MemberResponse>, Error> {
+    let members = get_project_members(pool, project_id)
+        .await
+        .map_err(actix_web::error::ErrorInternalServerError)?;
+    Ok(members)
 }

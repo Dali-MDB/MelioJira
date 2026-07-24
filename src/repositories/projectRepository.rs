@@ -1,4 +1,4 @@
-use crate::models::project::Project;
+use crate::models::{member::Member, project::Project};
 use sqlx::MySqlPool;
 use uuid::Uuid;
 
@@ -77,5 +77,20 @@ pub async fn delete_project(pool: &MySqlPool, id: Uuid) -> Result<(), sqlx::Erro
     let sql = "DELETE FROM projects WHERE id = ?;";
     let result = sqlx::query(sql).bind(id).execute(pool).await?;
 
+    Ok(())
+}
+
+pub async fn get_project_members(pool: &MySqlPool, project_id: Uuid) -> Result<Vec<Member>, sqlx::Error> {
+    let sql = "SELECT * FROM members WHERE project_id = ?;";
+    let result = sqlx::query_as::<_, Member>(sql)
+        .bind(project_id)
+        .fetch_all(pool)
+        .await?;
+    Ok(result)
+}
+
+pub async fn delete_all_project_members(pool: &MySqlPool, project_id: Uuid) -> Result<(), sqlx::Error> {
+    let sql = "DELETE FROM members WHERE project_id = ?;";
+    let result = sqlx::query(sql).bind(project_id).execute(pool).await?;
     Ok(())
 }

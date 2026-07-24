@@ -4,7 +4,7 @@ use actix_web::{
 };
 
 use crate::handlers::project_handlers::{
-    createProject, deleteProject, getAllUserProjects, getProject, updateProject,
+    createProject, deleteProject, getAllUserProjects, getProject, removeMember, updateProject,
 };
 
 pub fn config(cfg: &mut ServiceConfig) {
@@ -13,5 +13,6 @@ pub fn config(cfg: &mut ServiceConfig) {
         .service(getProject)
         .service(getAllUserProjects)
         .service(updateProject)
-        .service(deleteProject);
+        .service(deleteProject)
+        .service(removeMember);
 }

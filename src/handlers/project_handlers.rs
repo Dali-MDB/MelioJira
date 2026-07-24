@@ -1,6 +1,7 @@
 use crate::dtos::project::{CreateProjectRequest, UpdateProjectRequest};
 use crate::services::projects_service::{
-    deleteProjectService, getAllUserProjectsService, getProjectService, updateProjectService,
+    deleteProjectService, getAllUserProjectsService, getProjectMembersService, getProjectService, removeMemberService,
+    updateProjectService,
 };
 use crate::state::AppState;
 use crate::{models::user::User, services::projects_service::createProjectService};
@@ -72,5 +73,29 @@ pub async fn deleteProject(
         .get::<User>()
         .ok_or_else(|| actix_web::error::ErrorUnauthorized("Unauthorized"))?;
     let response = deleteProjectService(&state.pool, id.into_inner(), current_user.id).await?;
+    Ok(HttpResponse::Ok().json(response))
+}
+
+#[delete("/projects/{project_id}/members/{member_id}")]
+pub async fn removeMember(
+    req: HttpRequest,
+    state: web::Data<AppState>,
+    path: web::Path<(Uuid, Uuid)>,
+) -> Result<HttpResponse, Error> {
+    let extension = req.extensions_mut();
+    let current_user = extension
+        .get::<User>()
+        .ok_or_else(|| actix_web::error::ErrorUnauthorized("Unauthorized"))?;
+    let (project_id, member_id) = path.into_inner();
+    removeMemberService(&state.pool, project_id, member_id, current_user.id).await?;
+    Ok(HttpResponse::Ok().finish())
+}
+
+#[get("/projects/{project_id}/members")]
+pub async fn getProjectMembers(
+    state: web::Data<AppState>,
+    project_id: web::Path<Uuid>,
+) -> Result<HttpResponse, Error> {
+    let response = getProjectMembersService(&state.pool, project_id.into_inner()).await?;
     Ok(HttpResponse::Ok().json(response))
 }
