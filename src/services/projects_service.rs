@@ -101,14 +101,15 @@ pub async fn deleteProjectService(pool: &MySqlPool, id: Uuid, user_id: Uuid) -> 
             "You are not the owner of this project".to_string(),
         ));
     }
-    //delete the project
-    delete_project(pool, id)
-        .await
-        .map_err(actix_web::error::ErrorInternalServerError)?;
     //delete all the project members
     delete_all_project_members(pool, id)
         .await
         .map_err(actix_web::error::ErrorInternalServerError)?;
+    //delete the project
+    delete_project(pool, id)
+        .await
+        .map_err(actix_web::error::ErrorInternalServerError)?;
+    
     Ok(())
 }
 
